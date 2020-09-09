@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>board list!!</h1>
+
+
+<table>
+    <thead>
+    <tr>
+        <th class="one wide">번호</th>
+        <th class="ten wide">글제목</th>
+        <th class="two wide">작성자</th>
+        <th class="three wide">작성일</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- CONTENTS !-->
+    <tr th:each="postDTOList : ${postDTOList}">
+        <td>
+            <span th:text="${postDTOList.id}"></span>
+        </td>
+        <td>
+            <span th:text="${postDTOList.title}"></span>
+        </td>
+        <td>
+            <span th:text="${postDTOList.writer}"></span>
+        </td>
+        <td>
+            <span th:text="${postDTOList.date}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

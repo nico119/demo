@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.TestMapper">
+
+    <select id="getAll" resultType="com.example.demo.Dto.UserDTO">
+        SELECT * FROM user
+    </select>
+
+    <select id="checkUserInfo" parameterType="com.example.demo.Dto.UserDTO" resultType="com.example.demo.Dto.UserDTO">
+        select * from user where name = (#{name}) and password=(#{password})
+    </select>
+
+    <insert id="insertUserList" parameterType="com.example.demo.Dto.UserDTO">
+        insert into user (name,password) values (#{name}, #{password})
+    </insert>
+
+    <insert id="insertContent" parameterType="com.example.demo.Dto.PostDTO">
+        insert into post (title,writer, content, delete_password) value (#{title},#{writer},#{content},#{delete_password})
+    </insert>
+
+    <select id="getAllContent" resultType="com.example.demo.Dto.PostDTO">
+        SELECT id, title, content, date FROM post
+     </select>
+
+    <select id="getContent" resultType="com.example.demo.Dto.PostDTO">
+        SELECT id, title, content, delete_password, name FROM post limit 5
+     </select>
+
+</mapper>

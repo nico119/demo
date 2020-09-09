@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 th:text="${result}">기본 메시지</h1>
+
+<h1><span th:text="${session['username']}"></span></h1>
+<h1 >님 환영합니다 !</h1>
+
+<form action="/gotoContent" method="get">
+    <input type="submit" value="게시글 쓰기!">
+</form>
+
+</body>
+</html>
