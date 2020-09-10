@@ -21,7 +21,16 @@ import java.util.List;
     @Autowired
     UserService userService;
 
-    @GetMapping("/gotoContent")
+    @GetMapping("/showBoard")
+    public String boardpage(HttpServletRequest req, Model model) throws Exception{
+        HttpSession session = req.getSession();
+        //String writer = (String)session.getAttribute("username");
+        List<PostDTO> PostDTOList = userService.getContent();
+        model.addAttribute("PostList",PostDTOList);
+        return "post/postlist";
+    }
+
+    @GetMapping("/registerPost")
     public String gotocontent()throws Exception{
         return "post/writepost";
     }
@@ -31,15 +40,7 @@ import java.util.List;
         HttpSession session = req.getSession();
         String writer = (String)session.getAttribute("username");
 
-        System.out.println("확인용 코드입니다.");
-        System.out.println("=======================================================");
-        System.out.println("title ="+title);
-        System.out.println("delete_password ="+delete_password);
-        System.out.println("writer ="+writer);
-        System.out.println("content ="+content);
-        System.out.println("=======================================================");
-
-        PostDTO con = new PostDTO(title,content,writer,delete_password);
+        PostDTO con = new PostDTO(title,content,delete_password,writer);
         userService.insertContent(con);
 
         List<PostDTO> postDTOList = userService.getContent();
@@ -48,6 +49,6 @@ import java.util.List;
         }
 
         model.addAttribute("postDTOList", postDTOList);
-        return "board/boardlist";
+        return "post/postlist";
     }
 }

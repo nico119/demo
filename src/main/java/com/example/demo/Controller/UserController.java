@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 @AllArgsConstructor
 public class UserController
 {
-
     @Autowired
     UserService userService;
 
@@ -30,11 +29,10 @@ public class UserController
         return "user/signup.html";
     }
 
-    @RequestMapping(value="/login", method = RequestMethod.POST)
+    /*@RequestMapping(value="/login", method = RequestMethod.POST)
     public String test(@RequestParam String name, @RequestParam String password, Model model) throws Exception {
         return "post/postlist.html";
-    }
-
+    }*/
 
     //Requestbody 사용하지 않아도 되는가 ?
     @RequestMapping(value="/register", method = RequestMethod.POST)
@@ -60,12 +58,10 @@ public class UserController
             HttpSession session = req.getSession();
             String sessionid = userinfo.getName();
             session.setAttribute("username",sessionid);
-
             return "post/loginsuccess.html";
         } else {
             //model.addAttribute("result", 0);
-
-            return "user/login.html";
+            return "redirect:/user/login.html";
         }
     }
 }

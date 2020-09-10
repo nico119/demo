@@ -5,8 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<h1>board list!!</h1>
-
+<h1>BOARD</h1>
 
 <table>
     <thead>
@@ -20,21 +19,24 @@
 
     <tbody>
     <!-- CONTENTS !-->
-    <tr th:each="postDTOList : ${postDTOList}">
+    <tr th:each="post : ${postDTOList}">
         <td>
-            <span th:text="${postDTOList.id}"></span>
+            <span th:text="${post.id}"></span>
         </td>
         <td>
-            <span th:text="${postDTOList.title}"></span>
+            <span th:text="${post.title}"></span>
         </td>
         <td>
-            <span th:text="${postDTOList.writer}"></span>
+            <span th:text="${post.writer}"></span>
         </td>
         <td>
-            <span th:text="${postDTOList.date}"></span>
+            <span th:text="${post.date}"></span>
         </td>
     </tr>
     </tbody>
 </table>
+<form action="/registerPost" method="get">
+    <input type="submit" value="게시물 작성">
+</form>
 </body>
 </html>

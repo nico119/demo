@@ -7,7 +7,7 @@
     </select>
 
     <select id="checkUserInfo" parameterType="com.example.demo.Dto.UserDTO" resultType="com.example.demo.Dto.UserDTO">
-        select * from user where name = (#{name}) and password=(#{password})
+        select * from user where name=(#{name}) and password=(#{password})
     </select>
 
     <insert id="insertUserList" parameterType="com.example.demo.Dto.UserDTO">
@@ -15,7 +15,7 @@
     </insert>
 
     <insert id="insertContent" parameterType="com.example.demo.Dto.PostDTO">
-        insert into post (title,writer, content, delete_password) value (#{title},#{writer},#{content},#{delete_password})
+        insert into post (title, content,delete_password, writer) value (#{title},#{content},#{delete_password},#{writer})
     </insert>
 
     <select id="getAllContent" resultType="com.example.demo.Dto.PostDTO">
@@ -23,7 +23,7 @@
      </select>
 
     <select id="getContent" resultType="com.example.demo.Dto.PostDTO">
-        SELECT id, title, content, delete_password, name FROM post limit 5
+        SELECT id, title, delete_password, writer FROM post
      </select>
 
 </mapper>
