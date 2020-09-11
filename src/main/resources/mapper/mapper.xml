@@ -23,7 +23,7 @@
      </select>
 
     <select id="viewPostDetail" resultType="com.example.demo.Dto.PostDTO" parameterType="com.example.demo.Dto.PostDTO">
-        SELECT title, content, delete_password,writer FROM post  WHERE id = (#{id})
+        SELECT title, content, delete_password,writer,user_id FROM post  WHERE id = (#{id})
     </select>
 
     <select id="checkWriter" parameterType="com.example.demo.Dto.PostDTO" resultType="com.example.demo.Dto.PostDTO">

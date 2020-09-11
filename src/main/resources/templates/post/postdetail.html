@@ -13,7 +13,9 @@
 
 <input name="id"  th:value="${postId}" style="display:none">
 
-<form action="/checkWriter" (postId=${post.id}) >
+
+<!--(postId=${post.id})  form안에 데이터넣기 -->
+<form action="/checkWriter">
     <input type="submit" value="수정하기">
 </form>
 

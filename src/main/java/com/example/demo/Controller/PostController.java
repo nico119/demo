@@ -85,7 +85,7 @@ public class PostController {
         resultCon = userService.viewPostDetail(con);
         resultCon.setId(postId);
 
-        if (user_id == con.getUser_id()) {
+        if (user_id == resultCon.getUser_id()) {
             model.addAttribute("postDetail",resultCon);
             model.addAttribute("postId",postId);
             return "post/updatePost";
