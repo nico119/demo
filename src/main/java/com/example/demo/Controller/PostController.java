@@ -22,16 +22,16 @@ public class PostController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/showBoard")
+    @GetMapping("/postlist")
     public String boardpage(HttpServletRequest req, Model model) throws Exception{
         HttpSession session = req.getSession();
         String writer = (String)session.getAttribute("username");
         List<PostDTO> PostDTOList = userService.getPost();
-        model.addAttribute("PostDTOList",PostDTOList);
+        model.addAttribute("postDTOList",PostDTOList);
         return "post/postlist";
     }
 
-    @GetMapping("/registerPost")
+    @GetMapping("/writepost")
     public String gotocontent()throws Exception{
         return "post/writepost";
     }
@@ -40,8 +40,9 @@ public class PostController {
     public String insertcontent(@RequestParam String title, @RequestParam String content, @RequestParam String delete_password, HttpServletRequest req, Model model) throws Exception{
         HttpSession session = req.getSession();
         String writer = (String)session.getAttribute("username");
+        int user_id = (int) session.getAttribute("userid");
 
-        PostDTO con = new PostDTO(title,content,delete_password,writer);
+        PostDTO con = new PostDTO(title,content,delete_password,writer,user_id);
         userService.insertContent(con);
 
         List<PostDTO> postDTOList = userService.getPost();
@@ -56,28 +57,60 @@ public class PostController {
     @GetMapping("/viewPost")
     public String getPostDetail(@RequestParam int postId, @ModelAttribute PostDTO PostDTO,HttpServletRequest req, Model model)throws Exception
     {
-        //modelattribute 개념 확인하기
-      //  System.out.println(titleVO.getid());
+
         HttpSession session = req.getSession();
         String writer = (String)session.getAttribute("username");
 
-    PostDTO con = new PostDTO(postId);
+    PostDTO con = new PostDTO(postId,writer);
     PostDTO resultCon = new PostDTO();
 
     resultCon =userService.viewPostDetail(con);
     resultCon.setId(postId);
-
-        System.out.println("it is for test");
-        System.out.println("============================");
-        System.out.println(resultCon.getTitle());
-        System.out.println(resultCon.getWriter());
-        System.out.println(resultCon.getDelete_password());
-        System.out.println(resultCon.getContent());
-        System.out.println("============================");
+    //TODO SELECT문 한번에 통합
 
         model.addAttribute("postDetail",resultCon);
         model.addAttribute("postId",postId);
 
         return "post/postdetail";
     }
+
+    @GetMapping("/checkWriter")
+    public String checkWriter(@RequestParam int postId, @ModelAttribute PostDTO PostDTO, HttpServletRequest req, Model model )throws Exception {
+        HttpSession session = req.getSession();
+        int user_id = (int) session.getAttribute("userid");
+
+        PostDTO con = new PostDTO(postId);
+        PostDTO resultCon = new PostDTO();
+
+        resultCon = userService.viewPostDetail(con);
+        resultCon.setId(postId);
+
+        if (user_id == con.getUser_id()) {
+            model.addAttribute("postDetail",resultCon);
+            model.addAttribute("postId",postId);
+            return "post/updatePost";
+        }
+        else {
+            System.out.println("권한없음");
+            return "redirect:/post/postlist";
+        }
+
+        /*
+        public String ckeckUser(@RequestParam("name") String name, @RequestParam("password") String password, HttpServletRequest req) throws Exception {
+
+        UserDTO mv = new UserDTO(name, password);
+        UserDTO userinfo = userService.checkUserInfo(mv);
+*//*
+        if (userinfo.getName().equals(name) && userinfo.getPassword().equals(password)) {
+            //session 생성 후 id 저장
+            HttpSession session = req.getSession();
+            String sessionname = userinfo.getName();
+            int sessionid = userinfo.getId();
+            session.setAttribute("username",sessionname);
+            session.setAttribute("userid",sessionid);
+            return "post/loginsuccess.html";
+             */
+
+    }
+
 }
