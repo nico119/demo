@@ -7,10 +7,11 @@
 <body>
 <h1 th:text="${result}">기본 메시지</h1>
 
+<h1><span th:text="${session['userid']}"></span></h1>
 <h1><span th:text="${session['username']}"></span></h1>
 <h1 >님 환영합니다 !</h1>
 
-<form action="/showBoard" method="get">
+<form action="/postlist" method="get">
     <input type="submit" value="게시판 이동">
 </form>
 

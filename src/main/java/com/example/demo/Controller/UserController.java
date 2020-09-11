@@ -46,7 +46,7 @@ public class UserController
     }
 
     @PostMapping("/checkUser")
-    public String ckeckUser(@RequestParam("name") String name, @RequestParam("password") String password, ModelMap model, HttpServletRequest req) throws Exception {
+    public String ckeckUser(@RequestParam("name") String name, @RequestParam("password") String password, HttpServletRequest req) throws Exception {
 
         UserDTO mv = new UserDTO(name, password);
         UserDTO userinfo = userService.checkUserInfo(mv);
@@ -54,8 +54,10 @@ public class UserController
         if (userinfo.getName().equals(name) && userinfo.getPassword().equals(password)) {
             //session 생성 후 id 저장
             HttpSession session = req.getSession();
-            String sessionid = userinfo.getName();
-            session.setAttribute("username",sessionid);
+            String sessionname = userinfo.getName();
+            int sessionid = userinfo.getId();
+            session.setAttribute("username",sessionname);
+            session.setAttribute("userid",sessionid);
             return "post/loginsuccess.html";
         } else {
             //model.addAttribute("result", 0);

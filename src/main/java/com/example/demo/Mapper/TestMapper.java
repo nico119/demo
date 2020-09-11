@@ -12,4 +12,5 @@ public interface TestMapper {
     List<PostDTO> getAllContent() throws Exception;
     List<PostDTO> getPost() throws Exception;
     PostDTO viewPostDetail (PostDTO con) throws Exception;
+    PostDTO checkWriter(PostDTO map) throws Exception;
 }

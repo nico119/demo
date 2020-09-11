@@ -11,7 +11,7 @@
     </insert>
 
     <insert id="insertContent" parameterType="com.example.demo.Dto.PostDTO">
-        insert into post (title, content,delete_password, writer) value (#{title},#{content},#{delete_password},#{writer})
+        insert into post (title, content,delete_password, writer,user_id) value (#{title},#{content},#{delete_password},#{writer},#{user_id})
     </insert>
 
     <select id="getAllContent" resultType="com.example.demo.Dto.PostDTO">
@@ -19,11 +19,15 @@
      </select>
 
     <select id="getPost" resultType="com.example.demo.Dto.PostDTO">
-        SELECT id, title,content, delete_password,date, writer FROM post
+        SELECT id, title,content, delete_password,date, writer,user_id FROM post
      </select>
 
     <select id="viewPostDetail" resultType="com.example.demo.Dto.PostDTO" parameterType="com.example.demo.Dto.PostDTO">
-        SELECT title, content, delete_password FROM post  WHERE id = (#{id})
+        SELECT title, content, delete_password,writer FROM post  WHERE id = (#{id})
+    </select>
+
+    <select id="checkWriter" parameterType="com.example.demo.Dto.PostDTO" resultType="com.example.demo.Dto.PostDTO">
+        select * from post where name=(#{name}) and password=(#{password})
     </select>
 
 </mapper>

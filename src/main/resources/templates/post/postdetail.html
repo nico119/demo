@@ -6,14 +6,18 @@
     <title>Title</title>
 </head>
 <body>
-<h1>게시글 보기</h1>
-<h1>see the content detail ! </h1>
+<h1>POST DETAIL</h1>
 <p><textarea name="title" cols="85" rows="1" th:text="${postDetail.title}" readonly>      </textarea></p>
+<p><textarea name="content" cols="85" rows="1" th:text="${postDetail.writer}" readonly>   </textarea></p>
 <p><textarea name="content" cols="85" rows="10" th:text="${postDetail.content}" readonly>   </textarea></p>
 
 <input name="id"  th:value="${postId}" style="display:none">
 
-<form action="/showBoard">
+<form action="/checkWriter" (postId=${post.id}) >
+    <input type="submit" value="수정하기">
+</form>
+
+<form action="/postlist">
     <input type="submit" value="돌아가기">
 </form>
 
@@ -27,4 +31,4 @@
     <a th:href="@{/seeContent (contentId=${contentdetail.id}) }">
         <span>완료</span>
     </a>
-</form> --->>>
+</form> --->

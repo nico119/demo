@@ -17,7 +17,14 @@ public class PostDTO {
     private String delete_password;
     private LocalDateTime date;
     private String writer;
+    private int user_id;
 
+    public int getUser_id() {
+        return user_id;
+    }
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 
     public int getId() {
         return id;
@@ -73,19 +80,27 @@ public class PostDTO {
         this.id=id;
     }
 
-    public PostDTO(int id, String title, String content, String delete_password, String writer) {
+    public PostDTO(int id, String writer)
+    {
+        this.id=id;
+        this.writer=writer;
+    }
+
+    public PostDTO(int id, String title, String content, String delete_password, String writer,int user_id) {
         this.title = title;
         this.content = content;
         this.id = id;
         this.delete_password = delete_password;
         this.writer = writer;
+        this.user_id=user_id;
     }
 
-    public PostDTO(String title,  String content, String delete_password,String writer) {
+    public PostDTO(String title,String content,String delete_password,String writer,int user_id) {
         this.title = title;
         this.writer = writer;
         this.content = content;
         this.delete_password = delete_password;
+        this.user_id=user_id;
     }
 
     public PostDTO(String title, String content, String delete_password, LocalDateTime date, String writer) {
