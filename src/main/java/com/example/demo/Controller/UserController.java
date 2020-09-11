@@ -38,12 +38,10 @@ public class UserController
     @RequestMapping(value="/register", method = RequestMethod.POST)
     public String register(@RequestParam String name, @RequestParam String password,Model model) throws Exception {
 
-        System.out.println(name);
-        System.out.println(password);
         UserDTO mv = new UserDTO(name,password);
-
+        /*model.addAttribute("name", name);
+        model.addAttribute("password", password);*/
         userService.insertUser(mv);
-        /* model.addAttribute("meaage", id);*/
         return "user/login.html";
     }
 

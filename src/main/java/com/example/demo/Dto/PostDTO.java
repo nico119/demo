@@ -1,16 +1,21 @@
 package com.example.demo.Dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.ibatis.annotations.ConstructorArgs;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
+@Getter
+@Setter
 public class PostDTO {
     private int id;
     private String title;
     private String content;
     private String delete_password;
-    private Date date;
+    private LocalDateTime date;
     private String writer;
 
 
@@ -54,14 +59,19 @@ public class PostDTO {
         this.writer = writer;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
+    public PostDTO() {}
+
+    public PostDTO(int id){
+        this.id=id;
+    }
 
     public PostDTO(int id, String title, String content, String delete_password, String writer) {
         this.title = title;
@@ -78,17 +88,19 @@ public class PostDTO {
         this.delete_password = delete_password;
     }
 
-    public PostDTO(String title, String content, String delete_password) {
+    public PostDTO(String title, String content, String delete_password, LocalDateTime date, String writer) {
         this.title = title;
         this.content = content;
         this.delete_password = delete_password;
-    }
-
-    public PostDTO(String title, String content, String delete_password, Date date, String writer) {
-        this.title = title;
-        this.content = content;
         this.date = date;
+        this.writer=writer;
+    }
+    public PostDTO(int id,String title, String content, String delete_password, LocalDateTime date, String writer) {
+        this.id=id;
+        this.title = title;
+        this.content = content;
         this.delete_password = delete_password;
+        this.date = date;
         this.writer=writer;
     }
 }

@@ -6,10 +6,10 @@ import com.example.demo.Dto.UserDTO;
 import java.util.List;
 
 public interface TestMapper {
-    public List<UserDTO> getAll() throws Exception;
     void insertUserList(UserDTO map) throws Exception;
     UserDTO checkUserInfo(UserDTO map) throws Exception;
     void insertContent(PostDTO con) throws Exception;
     List<PostDTO> getAllContent() throws Exception;
-    List<PostDTO> getContent() throws Exception;
+    List<PostDTO> getPost() throws Exception;
+    PostDTO viewPostDetail (PostDTO con) throws Exception;
 }

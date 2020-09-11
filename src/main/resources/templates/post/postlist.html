@@ -23,8 +23,8 @@
         <td>
             <span th:text="${post.id}"></span>
         </td>
-        <td>
-            <span th:text="${post.title}"></span>
+        <td><a th:href="@{/viewPost (postId=${post.id}) }">
+            <span th:text="${post.title}"></span></a>
         </td>
         <td>
             <span th:text="${post.writer}"></span>

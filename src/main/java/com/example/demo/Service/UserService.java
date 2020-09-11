@@ -14,10 +14,6 @@ public class UserService {
     @Resource
     TestMapper testMapper;
 
-    public List<UserDTO> getAll() throws Exception{
-        return testMapper.getAll();
-    }
-
     public void insertUser(UserDTO map) throws Exception{
         testMapper.insertUserList(map);
     }
@@ -34,10 +30,11 @@ public class UserService {
         return testMapper.getAllContent();
     }
 
-    public List<PostDTO> getContent() throws Exception{
-        return testMapper.getContent();
+    public List<PostDTO> getPost() throws Exception{
+        return testMapper.getPost();
     }
 
-
-
+    public PostDTO viewPostDetail(PostDTO con) throws Exception{
+        return testMapper.viewPostDetail(con);
+    }
 }
