@@ -8,17 +8,23 @@
 <body>
 <h1>POST DETAIL</h1>
 <p><textarea name="title" cols="85" rows="1" th:text="${postDetail.title}" readonly>      </textarea></p>
-<p><textarea name="content" cols="85" rows="1" th:text="${postDetail.writer}" readonly>   </textarea></p>
+<p><textarea name="writer" cols="85" rows="1" th:text="${postDetail.writer}" readonly>   </textarea></p>
 <p><textarea name="content" cols="85" rows="10" th:text="${postDetail.content}" readonly>   </textarea></p>
 
 <input name="id"  th:value="${postId}" style="display:none">
 
 
-<!--(postId=${post.id})  form안에 데이터넣기 -->
-<form action="/checkWriter">
-    <input type="submit" value="수정하기">
+<!--(postId=${post.id})   (user_id=${post.user_id}) form안에 데이터넣기 -->
+<form action="/checkWriter" method="post">
+    <input type="submit" value="수정하기" >
+    <input type="hidden" name="postId" th:value="${postDetail.id}">
+    <input type="hidden" name="user_id" th:value="${postDetail.user_id}">
 </form>
-
+<form action="/deletePost" method="post">
+    <input name="delete_password" type="text" placeholder="삭제 비밀번호 4자리" >
+    <input type="submit" value="삭제하기" >
+    <input type="hidden" name="postId" th:value="${postDetail.id}">
+</form>
 <form action="/postlist">
     <input type="submit" value="돌아가기">
 </form>

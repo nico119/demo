@@ -26,9 +26,6 @@ public class UserService {
         testMapper.insertContent(con);
     }
 
-    public List<PostDTO> getAllContent() throws Exception{
-        return testMapper.getAllContent();
-    }
 
     public List<PostDTO> getPost() throws Exception{
         return testMapper.getPost();
@@ -38,7 +35,15 @@ public class UserService {
         return testMapper.viewPostDetail(con);
     }
 
-    public PostDTO checkWriter(PostDTO map) throws Exception{
-        return testMapper.checkWriter(map);
+   public PostDTO checkWriter(PostDTO map) throws Exception{
+      return testMapper.checkWriter(map);
+   }
+
+    public PostDTO updatePost(PostDTO con) throws Exception{
+       return testMapper.updatePost(con);
+    }
+
+    public void deletePost(int id) throws Exception{
+        testMapper.deletePost(id);
     }
 }

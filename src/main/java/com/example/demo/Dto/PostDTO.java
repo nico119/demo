@@ -18,6 +18,13 @@ public class PostDTO {
     private LocalDateTime date;
     private String writer;
     private int user_id;
+    private String deleteYn;
+
+    public PostDTO(int postId, String title, String content) {
+        this.id=postId;
+        this.title=title;
+        this.content=content;
+    }
 
     public int getUser_id() {
         return user_id;
@@ -84,6 +91,11 @@ public class PostDTO {
     {
         this.id=id;
         this.writer=writer;
+    }
+    public PostDTO(int id, int user_id)
+    {
+        this.id=id;
+        this.user_id=user_id;
     }
 
     public PostDTO(int id, String title, String content, String delete_password, String writer,int user_id) {
