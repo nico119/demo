@@ -21,9 +21,10 @@
     <input type="hidden" name="user_id" th:value="${postDetail.user_id}">
 </form>
 <form action="/deletePost" method="post">
-    <input name="delete_password" type="text" placeholder="삭제 비밀번호 4자리" >
+    <input name="deletepassword" type="text" placeholder="삭제 비밀번호 4자리" >
     <input type="submit" value="삭제하기" >
     <input type="hidden" name="postId" th:value="${postDetail.id}">
+    <input type="hidden" name="delete_password" th:value="${postDetail.delete_password}">
 </form>
 <form action="/postlist">
     <input type="submit" value="돌아가기">

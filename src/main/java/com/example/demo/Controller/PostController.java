@@ -117,16 +117,13 @@ public class PostController {
     //게시물 상세보기 페이지에서 삭제 비밀번호 입력 후 삭제 버튼 클릭 시 delete_password 비교 후 일치 시 deleteYn을 'Y'로 변경
     //오류: 비밀번호 인식x  (모두 else 에러창나옴)
     @PostMapping("/deletePost")
-        public String deletePost(@RequestParam int postId, @RequestParam String delete_password, HttpServletRequest req, HttpServletResponse response, Model model)throws Exception {
+        public String deletePost(@RequestParam int postId, @RequestParam String delete_password, @RequestParam String deletepassword, HttpServletRequest req, HttpServletResponse response, Model model)throws Exception {
             HttpSession session = req.getSession();
-           PostDTO con = new PostDTO(postId);
-           PostDTO dp = new PostDTO();
-           dp=userService.viewPostDetail(con);
 
-            if (dp.getDelete_password() == delete_password) {
+            if (deletepassword == delete_password) {
                 userService.deletePost(postId);
-                List<PostDTO> PostDTOList = userService.getPost();
-                model.addAttribute("postDTOList",PostDTOList);
+                //List<PostDTO> PostDTOList = userService.getPost();
+                //model.addAttribute("postDTOList",PostDTOList);
                 return "redirect:/post/postlist";
             }
             else {
