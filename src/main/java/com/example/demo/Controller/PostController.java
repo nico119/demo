@@ -101,11 +101,11 @@ public class PostController {
             out.println("<script>alert('수정 권한이 없습니다.'); history.go(-1);</script>");
             out.flush();
             return "post/postDetail";
-
         }
     }
     
     //게시물 title이나 content 재작성 후 수정버튼 클릭 시 update작업
+    // put : 전체 교체 patch : 부분교체
     //TODO @PatchMapping("/updatePost") / [updatePost.html] <form action="/updatePost" method="patch"> 선언해도 오류
     //Request method 'GET' not supported
     //org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported
