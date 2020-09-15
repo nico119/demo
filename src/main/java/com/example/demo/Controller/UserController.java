@@ -10,7 +10,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 
 @Controller
 @AllArgsConstructor
@@ -26,7 +28,7 @@ public class UserController
 
     @GetMapping("/signup")
     public String goToMemberRegister() {
-        return "user/signup.html";
+        return "user/signUp.html";
     }
 
     /*@RequestMapping(value="/login", method = RequestMethod.POST)
@@ -34,33 +36,40 @@ public class UserController
         return "post/postlist.html";
     }*/
 
-    //Requestbody 사용하지 않아도 되는가 ?
-    @RequestMapping(value="/register", method = RequestMethod.POST)
-    public String register(@RequestParam String name, @RequestParam String password,Model model) throws Exception {
-
+    @PostMapping("/register")
+    public String register(@RequestParam String name, @RequestParam String password,Model model, HttpServletResponse response) throws Exception {
         UserDTO mv = new UserDTO(name,password);
-        /*model.addAttribute("name", name);
-        model.addAttribute("password", password);*/
-        userService.insertUser(mv);
-        return "user/login.html";
+        if(userService.checkUser(mv)==0){
+            userService.insertUser(mv);
+            return "user/login.html";
+        }
+        else{
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('동일 아이디/비밀번호가 이미 존재합니다!'); history.go(-1);</script>");
+            out.flush();
+            return "redirect:/user/signUp.html";
+        }
     }
 
     @PostMapping("/checkUser")
-    public String ckeckUser(@RequestParam("name") String name, @RequestParam("password") String password, HttpServletRequest req) throws Exception {
+    public String ckeckUser(@RequestParam String name, @RequestParam String password, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         UserDTO mv = new UserDTO(name, password);
-        UserDTO userinfo = userService.checkUserInfo(mv);
-
-        if (userinfo.getName().equals(name) && userinfo.getPassword().equals(password)) {
+        if(userService.checkUser(mv)==1){
             //session 생성 후 id 저장
             HttpSession session = req.getSession();
-            String sessionname = userinfo.getName();
-            int sessionid = userinfo.getId();
+            UserDTO user=userService.checkUserInfo(mv);
+            String sessionname = name;
+            int sessionid = user.getId();
             session.setAttribute("username",sessionname);
             session.setAttribute("userid",sessionid);
-            return "post/loginsuccess.html";
+            return "post/loginSuccess.html";
         } else {
-            //model.addAttribute("result", 0);
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('입력정보가 일치하지 않습니다!'); history.go(-1);</script>");
+            out.flush();
             return "redirect:/user/login.html";
         }
     }

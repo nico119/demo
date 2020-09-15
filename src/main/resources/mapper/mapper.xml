@@ -3,35 +3,64 @@
 <mapper namespace="com.example.demo.Mapper.TestMapper">
 
     <select id="checkUserInfo" parameterType="com.example.demo.Dto.UserDTO" resultType="com.example.demo.Dto.UserDTO">
-        select * from user where name=(#{name}) and password=(#{password})
+        SELECT * FROM user
+        WHERE name=(#{name}) and password=(#{password})
     </select>
 
-    <insert id="insertUserList" parameterType="com.example.demo.Dto.UserDTO">
-        insert into user (name,password) values (#{name}, #{password})
+    <select id="checkUser" parameterType="com.example.demo.Dto.UserDTO" resultType="int">
+        SELECT COUNT(*) FROM user
+        WHERE name=(#{name}) and password=(#{password})
+    </select>
+
+    <insert id="insertUser" parameterType="com.example.demo.Dto.UserDTO">
+        INSERT INTO user (name,password) VALUES (#{name}, #{password})
     </insert>
 
     <insert id="insertContent" parameterType="com.example.demo.Dto.PostDTO">
-        insert into post (title, content,delete_password, writer,user_id) value (#{title},#{content},#{delete_password},#{writer},#{user_id})
+        INSERT INTO post (title, content,delete_password, writer,user_id) VALUES (#{title},#{content},#{delete_password},#{writer},#{user_id})
     </insert>
 
     <select id="getPost" resultType="com.example.demo.Dto.PostDTO">
-        SELECT id, title,content, delete_password,date, writer,user_id FROM post WHERE deleteYn ='N'
+        SELECT
+            id, title,content, delete_password,date, writer,user_id
+        FROM
+            post
+        WHERE deleteYn ='N'
      </select>
 
-    <select id="viewPostDetail" resultType="com.example.demo.Dto.PostDTO" parameterType="com.example.demo.Dto.PostDTO">
-        SELECT id ,title, content, delete_password,writer,user_id FROM post  WHERE id = (#{id})
+    <select id="getPostCnt" resultType="int">
+		SELECT
+		    count(*) as listCnt
+		FROM
+			post
+	</select>
+
+    <select id="viewPostDetail" parameterType="com.example.demo.Dto.PostDTO" resultType="com.example.demo.Dto.PostDTO">
+        SELECT
+            id ,title, content, delete_password,writer,user_id,deleteYn
+        FROM
+            post
+        WHERE
+            id = (#{id})
     </select>
 
     <select id="checkWriter" parameterType="com.example.demo.Dto.PostDTO" resultType="com.example.demo.Dto.PostDTO">
-        select * from post where name=(#{name}) and password=(#{password})
+        SELECT * FROM post WHERE name=(#{name}) and password=(#{password})
     </select>
 
     <update id="updatePost" parameterType="com.example.demo.Dto.PostDTO">
-        update post SET title = (#{title}), content = (#{content})  where id=(#{id})
+        UPDATE post SET title = (#{title}), content = (#{content}) WHERE id=(#{id})
     </update>
 
     <update id="deletePost" parameterType="int">
-        update post SET deleteYn = 'Y' where id=(#{id})
+        UPDATE post SET deleteYn = 'Y' WHERE id=(#{id})
     </update>
 
+    <select id="getPostById" parameterType="int" resultType="com.example.demo.Dto.PostDTO">
+        SELECT id ,title, content, delete_password,writer,user_id,deleteYn FROM post  WHERE id = (#{id})
+    </select>
+
+    <select id="searchByKeyword" parameterType="String" resultType="com.example.demo.Dto.PostDTO">
+        SELECT * FROM post WHERE deleteYn ='N' or content LIKE CONCAT('%',#{keyword},'%') or title LIKE CONCAT('%',#{keyword},'%')
+    </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.example.demo.Mapper.TestMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 @Service
@@ -15,20 +16,30 @@ public class UserService {
     TestMapper testMapper;
 
     public void insertUser(UserDTO map) throws Exception{
-        testMapper.insertUserList(map);
+        testMapper.insertUser(map);
     }
 
     public UserDTO checkUserInfo(UserDTO map) throws Exception{
         return testMapper.checkUserInfo(map);
+    }
+    public PostDTO getUserById(int id) throws Exception{
+        return testMapper.getPostById(id);
+    }
+
+    public int checkUser(UserDTO map) throws Exception{
+        return testMapper.checkUser(map);
     }
 
     public void insertContent(PostDTO con) throws Exception{
         testMapper.insertContent(con);
     }
 
-
     public List<PostDTO> getPost() throws Exception{
         return testMapper.getPost();
+    }
+
+    public int getPostCnt() throws Exception{
+        return testMapper.getPostCnt();
     }
 
     public PostDTO viewPostDetail(PostDTO con) throws Exception{
@@ -39,11 +50,18 @@ public class UserService {
       return testMapper.checkWriter(map);
    }
 
-    public PostDTO updatePost(PostDTO con) throws Exception{
-       return testMapper.updatePost(con);
+    public void updatePost(PostDTO con) throws Exception{
+        testMapper.updatePost(con);
     }
 
     public void deletePost(int id) throws Exception{
         testMapper.deletePost(id);
+    }
+    public PostDTO getPostById(int id) throws Exception{
+        return testMapper.getPostById(id);
+    }
+
+    public List<PostDTO> searchByKeyword(String keyword) throws Exception {
+        return testMapper.searchByKeyword(keyword);
     }
 }
