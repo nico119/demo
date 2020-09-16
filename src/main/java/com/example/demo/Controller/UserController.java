@@ -36,6 +36,9 @@ public class UserController
         return "post/postlist.html";
     }*/
 
+    //throw catch를 적용할때 if/else 느낌으로 적용?
+    //catch는 조건?  조건을 아는법
+    //throw,throws 쓰는 사례
     @PostMapping("/register")
     public String register(@RequestParam String name, @RequestParam String password,Model model, HttpServletResponse response) throws Exception {
         UserDTO mv = new UserDTO(name,password);
@@ -52,6 +55,9 @@ public class UserController
         }
     }
 
+//    @Valid를 통한 유효성검사
+//    @ControllerAdvice를 이용한 Exception 헨들링
+//    ErrorCode 에러 메시지 통합
     @PostMapping("/checkUser")
     public String ckeckUser(@RequestParam String name, @RequestParam String password, HttpServletRequest req, HttpServletResponse response) throws Exception {
 

@@ -15,13 +15,13 @@
 
 
 <!--(postId=${post.id})   (user_id=${post.user_id}) form안에 데이터넣기 -->
-<form action="/checkWriter" method="get">
+<form action=/checkWriter  method="get">
     <input type="submit" value="수정하기" >
     <input type="hidden" name="postId" th:value="${postDetail.id}">
     <input type="hidden" name="user_id" th:value="${postDetail.user_id}">
 </form>
-<form action="/deletePost" method="post">
-    <input name="deletepassword" type="text" placeholder="삭제 비밀번호 4자리" >
+<form action=/deletePost method="post" >
+    <input name="deletePassword" type="text" placeholder="삭제 비밀번호 4자리" >
     <input type="submit" value="삭제하기" >
     <input type="hidden" name="postId" th:value="${postDetail.id}">
 </form>

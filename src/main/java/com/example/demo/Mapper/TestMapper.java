@@ -1,7 +1,10 @@
 package com.example.demo.Mapper;
 
 import com.example.demo.Dto.PostDTO;
+import com.example.demo.Dto.SearchDTO;
 import com.example.demo.Dto.UserDTO;
+
+import java.io.IOException;
 import java.util.List;
 
 public interface TestMapper {
@@ -9,7 +12,7 @@ public interface TestMapper {
     UserDTO checkUserInfo(UserDTO map) throws Exception;
     int checkUser(UserDTO map) throws Exception;
 
-    void insertContent(PostDTO con) throws Exception;
+    void insertContent(PostDTO con) throws IOException;
     List<PostDTO> getPost() throws Exception;
     int getPostCnt() throws Exception;
     PostDTO viewPostDetail (PostDTO con) throws Exception;
@@ -19,5 +22,6 @@ public interface TestMapper {
     void deletePost(int id) throws Exception;
 
     void updatePost(PostDTO con) throws  Exception;
-    List<PostDTO> searchByKeyword(String keyword) throws Exception;
+
+    List<PostDTO> searchByKeyword(SearchDTO con) throws Exception;
 }

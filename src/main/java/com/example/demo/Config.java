@@ -3,6 +3,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -20,6 +21,8 @@ public class Config {
         final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        //sessionFactory.setVfs(SpringBootVFS.class);
+        sessionFactory.setTypeAliasesPackage("com.example.demo.Dto");
         sessionFactory.setMapperLocations(resolver.getResources("classpath:mapper/*.xml"));
         return sessionFactory.getObject();
     }

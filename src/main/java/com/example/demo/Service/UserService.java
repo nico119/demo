@@ -1,12 +1,14 @@
 package com.example.demo.Service;
 
 import com.example.demo.Dto.PostDTO;
+import com.example.demo.Dto.SearchDTO;
 import com.example.demo.Dto.UserDTO;
 import com.example.demo.Mapper.TestMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.jws.soap.SOAPBinding;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -30,7 +32,7 @@ public class UserService {
         return testMapper.checkUser(map);
     }
 
-    public void insertContent(PostDTO con) throws Exception{
+    public void insertContent(PostDTO con) throws IOException {
         testMapper.insertContent(con);
     }
 
@@ -61,7 +63,8 @@ public class UserService {
         return testMapper.getPostById(id);
     }
 
-    public List<PostDTO> searchByKeyword(String keyword) throws Exception {
-        return testMapper.searchByKeyword(keyword);
+
+    public List<PostDTO> searchByKeyword(SearchDTO con) throws  Exception{
+        return  testMapper.searchByKeyword(con);
     }
 }

@@ -8,6 +8,17 @@
 <body>
 <h1>BOARD</h1>
 
+<form action="/searchByKeyword" method="get">
+    <div class="w100" style="padding-right:10px">
+        <select class="form-control form-control-sm" name="searchType" id="searchType">
+            <option value="title">제목</option>
+            <option value="content">본문</option>
+            <option value="writer">작성자</option>
+        </select>
+    </div>
+    <input type="text" name="keyword">
+    <input type="submit" value="검색">
+</form>
 
 <table>
     <thead>
@@ -26,7 +37,7 @@
         <td>
             <span th:text="${post.id}"></span>
         </td>
-        <td><a th:href="@{/viewPost (postId=${post.id}) }">
+        <td><a th:href="@{/posts/{postId} (postId=${post.id}) }">
             <span th:text="${post.title}"></span></a>
         </td>
         <td>
@@ -44,12 +55,5 @@
 <form action="/writepost" method="get">
     <input type="submit" value="게시물 작성">
 </form>
-
-<form action="/searchByKeyword" method="get">
-    <input type="text" name="keyword">
-    <input type="submit" value="검색">
-</form>
-
-
 </body>
 </html>
