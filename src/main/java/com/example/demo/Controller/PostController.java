@@ -127,8 +127,8 @@ public class PostController {
     // put : 전체 교체 patch : 부분교체   /{id} -> @pathvarible로 설정
     //form action에서 url에 값을 넣는법?
 
-    @PostMapping("/updatePost")
-    public String updatePost(@RequestParam int postId, @RequestParam String title, @RequestParam String content, @ModelAttribute PostDTO PostDTO, HttpServletRequest req, Model model)
+    @PatchMapping("/posts/{id}")
+    public String updatePost(@PathVariable ("id") int postId, @RequestParam String title, @RequestParam String content, @ModelAttribute PostDTO PostDTO, HttpServletRequest req,HttpServletResponse response, Model model)
     throws Exception {
         HttpSession session = req.getSession();
         PostDTO con= new PostDTO(postId,title,content);
@@ -140,8 +140,8 @@ public class PostController {
 
     //게시물 상세보기 페이지에서 삭제 비밀번호 입력 후 삭제 버튼 클릭 시 delete_password 비교 후 일치 시 deleteYn을 'Y'로 변경
 
-    @PostMapping("/deletePost")
-        public String deletePost(@RequestParam int postId, @RequestParam String deletePassword , HttpServletRequest req, HttpServletResponse response, Model model)throws Exception {
+    @DeleteMapping("/posts/{id}")
+        public String deletePost(@PathVariable("id") int postId, @RequestParam String deletePassword , HttpServletRequest req, HttpServletResponse response, Model model)throws Exception {
             HttpSession session = req.getSession();
             int userId = (int) session.getAttribute("userid");
            PostDTO con = userService.getPostById(postId);

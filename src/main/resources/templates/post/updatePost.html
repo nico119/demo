@@ -7,8 +7,8 @@
 </head>
 <body>
 <h1>UPDATE POST</h1>
-
-<form action="/updatePost" method="post">
+<form th:action="@{/posts/{id}(id=${postDetail.id})}" method="post" >
+    <input type="hidden" name="_method" value="PATCH">
     <p><textarea name="title" cols="50" rows="1" th:text="${postDetail.title}">  </textarea></p>
     <p><textarea name="content" cols="50" rows="10" th:text="${postDetail.content}">   </textarea></p>
     <input name="postId"  th:value="${postDetail.id}" style="display:none">
