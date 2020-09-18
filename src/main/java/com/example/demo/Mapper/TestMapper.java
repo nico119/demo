@@ -5,7 +5,9 @@ import com.example.demo.Dto.SearchDTO;
 import com.example.demo.Dto.UserDTO;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface TestMapper {
     void insertUser(UserDTO map) throws Exception;
@@ -24,4 +26,12 @@ public interface TestMapper {
     void updatePost(PostDTO con) throws  Exception;
 
     List<PostDTO> searchByKeyword(SearchDTO con) throws Exception;
+
+    int countBoardListTotal();
+
+    int countBoardList();
+
+    int count();
+
+    List <PostDTO> listPage(HashMap<String, Object> map) throws Exception;
 }

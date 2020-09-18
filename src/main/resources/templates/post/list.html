@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<h1>BOARD</h1>
+
+<form action="/postList" method="get">
+    <div class="w100" style="padding-right:10px">
+        <select class="form-control form-control-sm" name="searchType" id="searchType">
+            <option value="title">제목</option>
+            <option value="content">본문</option>
+            <option value="writer">작성자</option>
+        </select>
+    </div>
+    <input type="text" name="keyword">
+    <input type="submit" value="검색">
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th class="one wide">번호</th>
+        <th class="ten wide">글제목</th>
+        <th class="two wide">작성자</th>
+        <th class="two wide">작성자아이디</th>
+        <th class="three wide">작성일</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- CONTENTS !-->
+    <tr th:each="post : ${postDTOList}">
+        <td>
+            <span th:text="${post.id}"></span>
+        </td>
+        <td><a th:href="@{/posts/{postId} (postId=${post.id}) }">
+            <span th:text="${post.title}"></span></a>
+        </td>
+        <td>
+            <span th:text="${post.writer}"></span>
+        </td>
+        <td>
+            <span th:text="${post.user_id}"></span>
+        </td>
+        <td>
+            <span th:text="${post.date}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<form action="/writepost" method="get">
+    <input type="submit" value="게시물 작성">
+</form>
+<!--<ul>-->
+<!--<li>-->
+<!--    <a th:href="@/board/listPage?num=1">글 목록(페이징)</a>-->
+<!--</li>-->
+<!--</ul>-->
+
+<!--<if test="${prev}">-->
+<!--    <span>[ <a href="/board/listPage?num=${startPageNum - 1}">이전</a> ]</span>-->
+<!--</if>-->
+
+<!--<forEach begin="${startPageNum}" end="${endPageNum}" var="num">-->
+<!--  <span>-->
+<!--   <a href="/board/listPage?num=${num}">${num}</a>-->
+<!-- </span>-->
+<!--</forEach>-->
+
+<!--<if test="${next}">-->
+<!--    <span>[ <a href="/board/listPage?num=${endPageNum + 1}">다음</a> ]</span>-->
+<!--</if>-->
+
+<!--style="float:left;"-->
+    <if test="${page.prev}">
+    <form action="/postList">
+        <button th:text="prev" style="float:left;" ></button>
+        <input type="hidden" name="num" th:value="${page.startPageNum}-1">
+    </form>
+    </if>
+
+    <th:block th:each="num: ${#numbers.sequence(1,page.pageNum)}">
+    <form action="/postList">
+        <button th:text="${num}" style="float:left;" ></button>
+        <input type="hidden" name="num" id="num" th:value="${num}">
+    </form>
+    </th:block>
+
+    <if test="${page.next}">
+    <form action="/postList">
+        <button th:text="next" style="float:left;" ></button>
+        <input type="hidden" name="num" th:value="${page.endPageNum}+1">
+    </form>
+    </if>
+
+<!--<a th:href="@{/postList?num={page} (page=${num})}">num</a>-->
+<!--&lt;!&ndash;     <th:each begin="1" end="${pageNum}" var="num">&ndash;&gt;-->
+<!--    <th:each="num : ${#numbers.sequence(1,'${pageNum}')}">-->
+<!--&lt;!&ndash;        <th:block th:each="num : ${#numbers.sequence(1,${pageNum})}">&ndash;&gt;-->
+<!--        <span>-->
+<!--            <a th:href="@{/postList?num={num} (num=${num})}">-->
+<!--                num-->
+<!--            </a>-->
+<!--&lt;!&ndash;              <td><a th:href="@{/posts/{postId} (postId=${post.id}) }">&ndash;&gt;-->
+<!--		</span>-->
+<!--    </th:each>-->
+
+</body>
+</html>

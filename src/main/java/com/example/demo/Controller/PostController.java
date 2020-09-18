@@ -1,20 +1,22 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Dto.PostDTO;
-import com.example.demo.Dto.SearchDTO;
+import com.example.demo.Dto.*;
 import com.example.demo.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -22,16 +24,63 @@ public class PostController {
     @Autowired
     UserService userService;
 
-    //로그인 성공 이후 게시판목록으로 이동
-    @GetMapping("/postList")
-    public String boardPage(HttpServletRequest req, Model model) throws Exception
-    {
-            HttpSession session = req.getSession();
-            List<PostDTO> PostDTOList = userService.getPost();
-            model.addAttribute("postDTOList", PostDTOList);
-            return "/post/postList";
+    //검색 내용(keyword)이 존재하면(not null) option(title,contenet,writer)에 따라 keyword로 검색
+    //else시, 전체 게시판 목록만 뷰로 전달
+//    @GetMapping("/postList")
+//    public String boardPage(@RequestParam(required = false) String keyword,HttpServletRequest req, Model model) throws Exception
+//    {
+//        if(keyword!=null){
+//        String searchType =req.getParameter("searchType");
+//        SearchDTO con = new SearchDTO(searchType,keyword);
+//        List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
+//        model.addAttribute("postDTOList",SearchByKeywordList);}
+//        else{
+//            List<PostDTO> PostDTOList = userService.getPost();
+//            model.addAttribute("postDTOList", PostDTOList);
+//        }
+//        return "/post/postList";
+//    }
+////////////////////
 
+    @GetMapping("/postList")
+    public String boardListPage(@RequestParam ("num")int num,@RequestParam(required = false) String keyword,HttpServletRequest req, Model model) throws Exception
+    {
+        Pagination page=new Pagination();
+
+        page.setNum(num);
+        page.setCount(userService.count());
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("displayPost",page.getDisplayPost());
+        map.put("postNum",page.getPostNum());
+
+        List <PostDTO> PostDTOList= userService.listPage(map);
+        model.addAttribute("postDTOList", PostDTOList);
+//        model.addAttribute("pageNum", page.getPageNum());
+//
+//        model.addAttribute("startPageNum", page.getStartPageNum());
+//        model.addAttribute("endPageNum", page.getEndPageNum());
+//
+//        model.addAttribute("prev", page.getPrev());
+//        model.addAttribute("next", page.getNext());
+
+        model.addAttribute("page",page);
+        model.addAttribute("select", num);
+
+//        if(keyword!=null){
+//            String searchType =req.getParameter("searchType");
+//            SearchDTO con = new SearchDTO(searchType,keyword);
+//            List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
+//            model.addAttribute("postDTOList",SearchByKeywordList);}
+//        else{
+//            List<PostDTO> PostDTOList = userService.getPost();
+//            model.addAttribute("postDTOList", PostDTOList);
+//        }
+       return "post/list";
     }
+
+///////////////////////////////////////////
+
 
     //게시물 작성페이지로 이동
     @GetMapping("/writepost")
@@ -169,12 +218,12 @@ public class PostController {
         }
 
     //option(title,contenet,writer)에 따라 keyword로 검색
-    @GetMapping("/searchByKeyword")
-    public String searchByKeyword(@RequestParam String keyword,HttpServletRequest request, Model model) throws Exception{
-        String searchType =request.getParameter("searchType");
-        SearchDTO con = new SearchDTO(searchType,keyword);
-        List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
-        model.addAttribute("postDTOList",SearchByKeywordList);
-        return "/post/postList";
-    }
+//    @GetMapping("/searchByKeyword")
+//    public String searchByKeyword(@RequestParam String keyword,HttpServletRequest request, Model model) throws Exception{
+//        String searchType =request.getParameter("searchType");
+//        SearchDTO con = new SearchDTO(searchType,keyword);
+//        List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
+//        model.addAttribute("postDTOList",SearchByKeywordList);
+//        return "/post/postList";
+//    }
 }

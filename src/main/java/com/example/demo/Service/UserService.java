@@ -7,9 +7,10 @@ import com.example.demo.Mapper.TestMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -40,6 +41,10 @@ public class UserService {
         return testMapper.getPost();
     }
 
+    public List<PostDTO> listPage(HashMap<String,Object> map) throws Exception {
+        return testMapper.listPage(map);
+    }
+
     public int getPostCnt() throws Exception{
         return testMapper.getPostCnt();
     }
@@ -67,4 +72,14 @@ public class UserService {
     public List<PostDTO> searchByKeyword(SearchDTO con) throws  Exception{
         return  testMapper.searchByKeyword(con);
     }
+
+
+    public int countBoardListTotal() {
+        return testMapper.countBoardList();
+    }
+
+    public int count() {
+        return testMapper.count();
+    }
+
 }

@@ -2,6 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.Mapper.TestMapper">
 
+    <!-- 게시물 총 갯수 -->
+    <select id="count" resultType="int">
+ select count(id) from post where deleteYn='N'
+</select>
+
+    <select id="listPage" parameterType="hashMap" resultType="PostDTO">
+        SELECT
+            id, title,content, delete_password,date, writer,user_id
+        FROM
+           post
+        WHERE
+            deleteYn='N'
+         ORDER BY id DESC LIMIT #{displayPost}, #{postNum}
+         </select>
+
+<!--    <select id="selectBoardList" resultType="hashmap" parameterType="hashmap">-->
+<!--    <![CDATA[-->
+<!--        SELECT-->
+<!--            *-->
+<!--        FROM-->
+<!--            board-->
+<!--        WHERE-->
+<!--            DEL_CHK = 'N'-->
+<!--        ORDER BY IDX DESC-->
+<!--        LIMIT #{pageStart}, #{perPageNum}-->
+<!--    ]]>-->
+
+<!--</select>-->
+<!--    <select id="countBoardList" resultType="Integer">-->
+<!--    <![CDATA[-->
+<!--        SELECT-->
+<!--            count(*)-->
+<!--        FROM-->
+<!--            board-->
+<!--        WHERE-->
+<!--            DEL_CHK='N'-->
+<!--    ]]>-->
+<!--</select>-->
+
+
     <select id="checkUserInfo" parameterType="UserDTO" resultType="UserDTO">
         SELECT * FROM user
         WHERE name=(#{name}) and password=(#{password})
