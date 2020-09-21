@@ -1,5 +1,6 @@
 package com.example.demo.Mapper;
 
+import com.example.demo.Dto.Pagination;
 import com.example.demo.Dto.PostDTO;
 import com.example.demo.Dto.SearchDTO;
 import com.example.demo.Dto.UserDTO;
@@ -25,13 +26,15 @@ public interface TestMapper {
 
     void updatePost(PostDTO con) throws  Exception;
 
-    List<PostDTO> searchByKeyword(SearchDTO con) throws Exception;
+    List<PostDTO> searchByKeyword(Pagination con) throws Exception;
 
     int countBoardListTotal();
 
     int countBoardList();
 
-    int count();
+    int count() throws Exception;
 
-    List <PostDTO> listPage(HashMap<String, Object> map) throws Exception;
+    List <PostDTO> listPage(Pagination page) throws Exception;
+
+    int countSearchByKeyword(Pagination con);
 }

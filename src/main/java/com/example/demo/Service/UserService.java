@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.Dto.Pagination;
 import com.example.demo.Dto.PostDTO;
 import com.example.demo.Dto.SearchDTO;
 import com.example.demo.Dto.UserDTO;
@@ -41,8 +42,8 @@ public class UserService {
         return testMapper.getPost();
     }
 
-    public List<PostDTO> listPage(HashMap<String,Object> map) throws Exception {
-        return testMapper.listPage(map);
+    public List<PostDTO> listPage(Pagination page) throws Exception {
+        return testMapper.listPage(page);
     }
 
     public int getPostCnt() throws Exception{
@@ -69,8 +70,13 @@ public class UserService {
     }
 
 
-    public List<PostDTO> searchByKeyword(SearchDTO con) throws  Exception{
+    public List<PostDTO> searchByKeyword(Pagination con) throws  Exception{
         return  testMapper.searchByKeyword(con);
+    }
+
+
+    public int countSearchByKeyword(Pagination con) throws  Exception{
+        return  testMapper.countSearchByKeyword(con);
     }
 
 
@@ -78,7 +84,7 @@ public class UserService {
         return testMapper.countBoardList();
     }
 
-    public int count() {
+    public int count() throws Exception {
         return testMapper.count();
     }
 

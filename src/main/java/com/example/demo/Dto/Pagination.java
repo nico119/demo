@@ -1,5 +1,8 @@
 package com.example.demo.Dto;
 
+import lombok.Data;
+
+@Data
 public class Pagination {
     // 현재 페이지 번호
     private int num;
@@ -7,9 +10,9 @@ public class Pagination {
     private int count;
     // 한 페이지에 출력할 게시물 갯수
     private int postNum = 10;
-    // 하단 페이징 번호 ([ 게시물 총 갯수 ÷ 한 페이지에 출력할 갯수 ]의 올림)
+    // 필요한 하단 페이징 번호 ([ 게시물 총 갯수 ÷ 한 페이지에 출력할 갯수 ]의 올림)
     private int pageNum;
-    // 출력할 게시물
+    // 출력할 게시물 (시작점
     private int displayPost;
     // 한번에 표시할 페이징 번호의 갯수
     private int pageNumCnt = 10;
@@ -20,8 +23,11 @@ public class Pagination {
     // 다음/이전 표시 여부
     private boolean prev;
     private boolean next;
+    private String searchType;
+    private String keyword;
 
-    public void setNum(int num) {
+    public void setNum(int num)
+    {
         this.num = num;
     }
     public void setCount(int count) {
@@ -65,7 +71,6 @@ public class Pagination {
     }
 
     private void dataCalc() {
-
         // 마지막 번호
         endPageNum = (int)(Math.ceil((double)num / (double)pageNumCnt) * pageNumCnt);
 
@@ -82,8 +87,29 @@ public class Pagination {
         prev = startPageNum == 1 ? false : true;
         next = endPageNum * pageNumCnt >= count ? false : true;
 
-        displayPost = (num - 1) * postNum;
+        pageNum= (int)Math.ceil((double)count/postNum);
 
+        displayPost = (num - 1) * postNum;
+    }
+
+    public Pagination() {
+    }
+
+    public Pagination(String searchType,String keyword) {
+        this.searchType=searchType;
+        this.keyword=keyword;
+    }
+
+    public Pagination(int displayPost,int postNum) {
+        this.displayPost=displayPost;
+        this.postNum=postNum;
+    }
+
+    public Pagination(String searchType,String keyword, int displayPost,int postNum) {
+        this.searchType=searchType;
+        this.keyword=keyword;
+        this.displayPost=displayPost;
+        this.postNum=postNum;
     }
 }
 /*1.주석달기

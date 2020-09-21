@@ -7,7 +7,7 @@
  select count(id) from post where deleteYn='N'
 </select>
 
-    <select id="listPage" parameterType="hashMap" resultType="PostDTO">
+    <select id="listPage" parameterType="Pagination" resultType="PostDTO">
         SELECT
             id, title,content, delete_password,date, writer,user_id
         FROM
@@ -17,6 +17,34 @@
          ORDER BY id DESC LIMIT #{displayPost}, #{postNum}
          </select>
 
+    <select id="searchByKeyword" parameterType="Pagination" resultType="PostDTO">
+        SELECT * FROM post
+        WHERE deleteYn ='N'
+        <if test="searchType.equals('title')">
+            and title LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        <if test="searchType.equals('content')">
+            and content LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        <if test="searchType.equals('writer')">
+            and writer LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        ORDER BY id DESC LIMIT #{displayPost}, #{postNum}
+    </select>
+
+    <select id="countSearchByKeyword" parameterType="Pagination" resultType="int">
+        SELECT count(*) FROM post
+        WHERE deleteYn ='N'
+        <if test="searchType.equals('title')">
+            and title LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        <if test="searchType.equals('content')">
+            and content LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        <if test="searchType.equals('writer')">
+            and writer LIKE CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
 <!--    <select id="selectBoardList" resultType="hashmap" parameterType="hashmap">-->
 <!--    <![CDATA[-->
 <!--        SELECT-->
@@ -98,19 +126,5 @@
 
     <select id="getPostById" parameterType="int" resultType="PostDTO">
         SELECT id ,title, content, delete_password,writer,user_id,deleteYn FROM post  WHERE id = (#{id})
-    </select>
-
-    <select id="searchByKeyword" parameterType="SearchDTO" resultType="PostDTO">
-        SELECT * FROM post
-        WHERE deleteYn ='N'
-        <if test="searchType.equals('title')">
-        and title LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="searchType.equals('content')">
-            and content LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="searchType.equals('writer')">
-            and writer LIKE CONCAT('%',#{keyword},'%')
-        </if>
     </select>
 </mapper>

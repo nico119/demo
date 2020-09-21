@@ -12,6 +12,7 @@
     <p><textarea name="title" cols="50" rows="1" th:text="${postDetail.title}">  </textarea></p>
     <p><textarea name="content" cols="50" rows="10" th:text="${postDetail.content}">   </textarea></p>
     <input name="postId"  th:value="${postDetail.id}" style="display:none">
+    <input type="hidden" name="num" th:value="${select}">
     <input type="submit" value="완료">
 </form>
 

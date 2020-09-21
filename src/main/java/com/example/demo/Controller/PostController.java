@@ -1,6 +1,8 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Dto.*;
+import com.example.demo.Dto.Pagination;
+import com.example.demo.Dto.PostDTO;
+import com.example.demo.Dto.SearchDTO;
 import com.example.demo.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,22 +42,45 @@ public class PostController {
 //        }
 //        return "/post/postList";
 //    }
-////////////////////
-
+//////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/postList")
     public String boardListPage(@RequestParam ("num")int num,@RequestParam(required = false) String keyword,HttpServletRequest req, Model model) throws Exception
     {
-        Pagination page=new Pagination();
+        if(keyword!=null) {
+            String searchType = req.getParameter("searchType");
+            Pagination page = new Pagination(searchType, keyword);
+            page.setNum(num);
+            page.setCount(userService.countSearchByKeyword(page));
 
-        page.setNum(num);
-        page.setCount(userService.count());
+            List<PostDTO> SearchByKeywordList = userService.searchByKeyword(page);
+            model.addAttribute("postDTOList", SearchByKeywordList);
+            model.addAttribute("page", page);
+        }
+        else{
+            Pagination page = new Pagination();
+            page.setNum(num);
+            page.setCount(userService.count());
+           // page.setPageNum((page.getCount()/page.getPostNum()));
+//            HashMap<String, Object> map = new HashMap<String, Object>();
+//            map.put("displayPost",page.getDisplayPost());
+//            map.put("postNum",page.getPostNum());
 
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("displayPost",page.getDisplayPost());
-        map.put("postNum",page.getPostNum());
 
-        List <PostDTO> PostDTOList= userService.listPage(map);
-        model.addAttribute("postDTOList", PostDTOList);
+//            List <PostDTO> PostDTOList= userService.listPage(map);
+            List <PostDTO> PostDTOList= userService.listPage(page);
+
+            model.addAttribute("postDTOList", PostDTOList);
+            model.addAttribute("page",page);
+//
+//            model.addAttribute("startPageNum", page.getStartPageNum());
+//            model.addAttribute("endPageNum", page.getEndPageNum());
+//
+//            model.addAttribute("prev", page.getPrev());
+//            model.addAttribute("next", page.getNext());
+        }
+        model.addAttribute("select", num);
+        return "/post/list";
+
 //        model.addAttribute("pageNum", page.getPageNum());
 //
 //        model.addAttribute("startPageNum", page.getStartPageNum());
@@ -63,9 +88,6 @@ public class PostController {
 //
 //        model.addAttribute("prev", page.getPrev());
 //        model.addAttribute("next", page.getNext());
-
-        model.addAttribute("page",page);
-        model.addAttribute("select", num);
 
 //        if(keyword!=null){
 //            String searchType =req.getParameter("searchType");
@@ -76,10 +98,121 @@ public class PostController {
 //            List<PostDTO> PostDTOList = userService.getPost();
 //            model.addAttribute("postDTOList", PostDTOList);
 //        }
-       return "post/list";
     }
 
-///////////////////////////////////////////
+
+//    @GetMapping("/postList")
+//    public String boardListPage(@RequestParam ("num")int num,@RequestParam(required = false) String keyword,HttpServletRequest req, Model model) throws Exception
+//    {
+//        if(keyword!=null){
+//        String searchType =req.getParameter("searchType");
+//        SearchDTO con = new SearchDTO(searchType,keyword);
+//        List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
+//        model.addAttribute("postDTOList",SearchByKeywordList);}
+//        else{
+//            List<PostDTO> PostDTOList = userService.getPost();
+//            model.addAttribute("postDTOList", PostDTOList);
+//        }
+//        return "/post/postList";
+//        Pagination page=new Pagination();
+//
+//        page.setNum(num);
+//        page.setCount(userService.count());
+//        page.setPageNum((page.getCount()/page.getPostNum()));
+//
+//        HashMap<String, Object> map = new HashMap<String, Object>();
+//        map.put("displayPost",page.getDisplayPost());
+//        map.put("postNum",page.getPostNum());
+//
+//        List <PostDTO> PostDTOList= userService.listPage(map);
+//        model.addAttribute("postDTOList", PostDTOList);
+////        model.addAttribute("pageNum", page.getPageNum());
+////
+////        model.addAttribute("startPageNum", page.getStartPageNum());
+////        model.addAttribute("endPageNum", page.getEndPageNum());
+////
+////        model.addAttribute("prev", page.getPrev());
+////        model.addAttribute("next", page.getNext());
+//
+//        model.addAttribute("page",page);
+//        model.addAttribute("select", num);
+//
+////        if(keyword!=null){
+////            String searchType =req.getParameter("searchType");
+////            SearchDTO con = new SearchDTO(searchType,keyword);
+////            List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
+////            model.addAttribute("postDTOList",SearchByKeywordList);}
+////        else{
+////            List<PostDTO> PostDTOList = userService.getPost();
+////            model.addAttribute("postDTOList", PostDTOList);
+////        }
+//        return "/post/list";
+//    }
+//
+//    @GetMapping("/postList")
+//    public String boardListPage(@RequestParam ("num")int num,@RequestParam(required = false) String keyword,HttpServletRequest req, Model model) throws Exception
+//    {
+//
+//        // 게시물 총 갯수
+//        int count = userService.count();
+//
+//        // 한 페이지에 출력할 게시물 갯수
+//        int postNum = 10;
+//
+//        // 하단 페이징 번호 ([ 게시물 총 갯수 ÷ 한 페이지에 출력할 갯수 ]의 올림)
+//        int pageNum = (int)Math.ceil((double)count/postNum);
+//        // 한번에 표시할 페이징 번호의 갯수
+//        int pageNum_cnt = 10;
+//
+//// 표시되는 페이지 번호 중 마지막 번호
+//        int endPageNum = (int)(Math.ceil((double)num / (double)pageNum_cnt) * pageNum_cnt);
+//
+//// 표시되는 페이지 번호 중 첫번째 번호
+//        int startPageNum = endPageNum - (pageNum_cnt - 1);
+//        int endPageNum_tmp = (int)(Math.ceil((double)count / (double)pageNum_cnt));
+//
+//        if(endPageNum > endPageNum_tmp) {
+//            endPageNum = endPageNum_tmp;
+//        }
+//        boolean prev = startPageNum == 1 ? false : true;
+//        boolean next = endPageNum * pageNum_cnt >= count ? false : true;
+//
+//
+//
+//        // 출력할 게시물
+//        int displayPost = (num - 1) * postNum;
+//        HashMap<String, Object> map = new HashMap<String, Object>();
+//        map.put("displayPost",displayPost);
+//        map.put("postNum",postNum);
+//
+//        List <PostDTO> PostDTOList= userService.listPage(map);
+//        model.addAttribute("postDTOList", PostDTOList);
+//        model.addAttribute("pageNum", pageNum);
+//        // 시작 및 끝 번호
+//        model.addAttribute("startPageNum", startPageNum);
+//        model.addAttribute("endPageNum", endPageNum);
+//
+//// 이전 및 다음
+//        model.addAttribute("prev", prev);
+//        model.addAttribute("next", next);
+//
+//        model.addAttribute("select",num);
+//
+////        if(keyword!=null){
+////            String searchType =req.getParameter("searchType");
+////            SearchDTO con = new SearchDTO(searchType,keyword);
+////            List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
+////            model.addAttribute("postDTOList",SearchByKeywordList);}
+////        else{
+////            List<PostDTO> PostDTOList = userService.getPost();
+////            model.addAttribute("postDTOList", PostDTOList);
+////        }
+//       return "post/list";
+//    }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
 
 
     //게시물 작성페이지로 이동
@@ -97,9 +230,27 @@ public class PostController {
         PostDTO con = new PostDTO(title,content,deletePassword,writer,userId);
         try {
             userService.insertContent(con);
-            List<PostDTO> PostDTOList = userService.getPost();
+
+            Pagination page= new Pagination();
+            page.setNum(1);
+            page.setCount(userService.count());
+//            page.setPageNum((page.getCount()/page.getPostNum()));
+//            HashMap<String, Object> map = new HashMap<String, Object>();
+//            map.put("displayPost",page.getDisplayPost());
+//            map.put("postNum",page.getPostNum());
+            List <PostDTO> PostDTOList= userService.listPage(page);
+
             model.addAttribute("postDTOList", PostDTOList);
-            return "/post/postList";
+            model.addAttribute("page",page);
+//
+//            model.addAttribute("startPageNum", page.getStartPageNum());
+//            model.addAttribute("endPageNum", page.getEndPageNum());
+//
+//            model.addAttribute("prev", page.getPrev());
+//            model.addAttribute("next", page.getNext());
+
+        model.addAttribute("select", page.getNum());
+        return "/post/list";
         }
         catch (IOException e){
             e.printStackTrace();
@@ -129,19 +280,19 @@ public class PostController {
     //게시물 제목 클릭 시 게시물 상세보기 페이지로 이동
     //pathvariable 로
     @GetMapping("/posts/{id}")
-    public String getPostDetail(@PathVariable("id") int postId, @ModelAttribute PostDTO PostDTO,HttpServletRequest req, Model model)throws Exception
+    public String getPostDetail(@PathVariable("id") int postId,@RequestParam ("num") int num, @ModelAttribute PostDTO PostDTO,HttpServletRequest req, Model model)throws Exception
     {
 
         HttpSession session = req.getSession();
         String writer = (String)session.getAttribute("username");
-
-    PostDTO con = new PostDTO(postId,writer);
-    PostDTO resultCon = new PostDTO();
+        PostDTO con = new PostDTO(postId,writer);
+        PostDTO resultCon = new PostDTO();
 
     resultCon =userService.viewPostDetail(con);
 
         model.addAttribute("postDetail",resultCon);
         model.addAttribute("postId",postId);
+        model.addAttribute("select",num);
 
 
         return "/post/postDetail";
@@ -150,7 +301,7 @@ public class PostController {
   //게시물 상세보기 페이지에서 수정 버튼 클릭 시, 현재 세션의 userid와 게시물의 user_id를 비교하여 일치 시 수정 페이지로 이동
     //TODO 예외 처리
     @GetMapping("/checkWriter")
-    public String checkWriter(@RequestParam int postId, HttpServletRequest req,HttpServletResponse response, Model model)throws Exception {
+    public String checkWriter(@RequestParam int postId,@RequestParam int num, HttpServletRequest req,HttpServletResponse response, Model model)throws Exception {
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userid");
 
@@ -160,6 +311,7 @@ public class PostController {
         if (userId == resultCon.getUser_id()) {
             model.addAttribute("postDetail",resultCon);
             //model.addAttribute("postId",postId);
+            model.addAttribute("select",num);
             return "post/updatePost";
         }
         else {
@@ -177,29 +329,63 @@ public class PostController {
     //form action에서 url에 값을 넣는법?
 
     @PatchMapping("/posts/{id}")
-    public String updatePost(@PathVariable ("id") int postId, @RequestParam String title, @RequestParam String content, @ModelAttribute PostDTO PostDTO, HttpServletRequest req,HttpServletResponse response, Model model)
+    public String updatePost(@PathVariable ("id") int postId,@RequestParam int num, @RequestParam String title, @RequestParam String content, @ModelAttribute PostDTO PostDTO, HttpServletRequest req,HttpServletResponse response, Model model)
     throws Exception {
         HttpSession session = req.getSession();
         PostDTO con= new PostDTO(postId,title,content);
         userService.updatePost(con);
-        List<PostDTO> PostDTOList = userService.getPost();
+        Pagination page=new Pagination();
+        page.setNum(num);
+        page.setCount(userService.count());
+        List <PostDTO> PostDTOList=userService.listPage(page);
         model.addAttribute("postDTOList",PostDTOList);
-        return "/post/postList";
+        model.addAttribute("page",page);
+        model.addAttribute("select", num);
+        return "/post/list";
+
+
+//        page.setCount(userService.count());
+//        page.setPageNum((page.getCount()/page.getPostNum()));
+////            HashMap<String, Object> map = new HashMap<String, Object>();
+////            map.put("displayPost",page.getDisplayPost());
+////            map.put("postNum",page.getPostNum());
+//
+//
+////            List <PostDTO> PostDTOList= userService.listPage(map);
+//        List <PostDTO> PostDTOList= userService.listPage(page);
+//
+//        model.addAttribute("postDTOList", PostDTOList);
+//        model.addAttribute("page",page);
+////
+////            model.addAttribute("startPageNum", page.getStartPageNum());
+////            model.addAttribute("endPageNum", page.getEndPageNum());
+////
+////            model.addAttribute("prev", page.getPrev());
+////            model.addAttribute("next", page.getNext());
+//    }
+//        model.addAttribute("select", num);
+//        return "/post/list";
+
     }
 
     //게시물 상세보기 페이지에서 삭제 비밀번호 입력 후 삭제 버튼 클릭 시 delete_password 비교 후 일치 시 deleteYn을 'Y'로 변경
 
     @DeleteMapping("/posts/{id}")
-        public String deletePost(@PathVariable("id") int postId, @RequestParam String deletePassword , HttpServletRequest req, HttpServletResponse response, Model model)throws Exception {
+        public String deletePost(@PathVariable("id") int postId,@RequestParam int num, @RequestParam String deletePassword , HttpServletRequest req, HttpServletResponse response, Model model)throws Exception {
             HttpSession session = req.getSession();
             int userId = (int) session.getAttribute("userid");
            PostDTO con = userService.getPostById(postId);
 
             if  ((userId==con.getUser_id()) && (con.getDelete_password().equals(deletePassword))) {
                 userService.deletePost(postId);
-                List<PostDTO> PostDTOList = userService.getPost();
+                Pagination page=new Pagination();
+                page.setNum(num);
+                page.setCount(userService.count());
+                List <PostDTO> PostDTOList=userService.listPage(page);
                 model.addAttribute("postDTOList",PostDTOList);
-                return "/post/postList";
+                model.addAttribute("page",page);
+                model.addAttribute("select", num);
+                return "/post/list";
             }
             else if (userId!= con.getUser_id()){
             response.setContentType("text/html; charset=UTF-8");

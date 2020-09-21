@@ -37,9 +37,11 @@
         <td>
             <span th:text="${post.id}"></span>
         </td>
-        <td><a th:href="@{/posts/{postId} (postId=${post.id}) }">
+        <form>
+        <td><a th:href="@{/posts/{postId} (postId=${post.id}  )}">
             <span th:text="${post.title}"></span></a>
         </td>
+        </form>
         <td>
             <span th:text="${post.writer}"></span>
         </td>
