@@ -21,11 +21,13 @@ public class UserController
     @Autowired
     UserService userService;
 
+    //localhost:8080 접속 시 로그인 뷰 화면으로 이동
     @GetMapping("/")
     public String firstview() {
         return "user/login.html";
     }
 
+    //회원가입 버튼 클릭 시 회원가입 뷰로 이동
     @GetMapping("/signup")
     public String goToMemberRegister() {
         return "user/signUp.html";
@@ -34,6 +36,8 @@ public class UserController
     //throw catch를 적용할때 if/else 느낌으로 적용?
     //catch는 조건?  조건을 아는법
     //throw,throws 쓰는 사례
+
+    //회원가입 -> user등록
     @PostMapping("/register")
     public String register(@RequestParam String name, @RequestParam String password,Model model, HttpServletResponse response) throws Exception {
         UserDTO mv = new UserDTO(name,password);

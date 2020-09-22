@@ -52,7 +52,7 @@
             <span th:text="${post.id}"></span>
         </td>
         <form>
-            <td><a th:href="@{/posts/{postId} (postId=${post.id},num=${select},page=${page}) }">
+            <td><a th:href="@{/posts/{postId} (postId=${post.id},num=${select},searchType=${page.searchType},keyword=${page.keyword}) }">
                 <span th:text="${post.title}"></span></a>
             </td>
         </form>
@@ -65,51 +65,12 @@
         <td>
             <span th:text="${post.date}"></span>
         </td>
-
     </tr>
     </tbody>
 </table>
 <form action="/writepost" method="get">
     <input type="submit" value="게시물 작성">
 </form>
-<!--<ul>-->
-<!--<li>-->
-<!--    <a th:href="@/board/listPage?num=1">글 목록(페이징)</a>-->
-<!--</li>-->
-<!--</ul>-->
-
-<!--<if test="${prev}">-->
-<!--    <span>[ <a href="/board/listPage?num=${startPageNum - 1}">이전</a> ]</span>-->
-<!--</if>-->
-
-<!--<forEach begin="${startPageNum}" end="${endPageNum}" var="num">-->
-<!--  <span>-->
-<!--   <a href="/board/listPage?num=${num}">${num}</a>-->
-<!-- </span>-->
-<!--</forEach>-->
-
-<!--<if test="${next}">-->
-<!--    <span>[ <a href="/board/listPage?num=${endPageNum + 1}">다음</a> ]</span>-->
-<!--</if>-->
-
-<!--style="float:left;"-->
-<!--    <if test="${page.getPrev}">-->
-<!--    <form action="/postList">-->
-<!--        <button th:text="prev" style="float:left;" ></button>-->
-<!--        <input type="hidden" name="num" th:value="${page.getStartPageNum()}-1">-->
-<!--    </form>-->
-<!--    </if>-->
-
-<!--되는거-->
-<!--<th:block th:each="page : ${page}">-->
-<!--    <th:block th:each="cur: ${#numbers.sequence(1,page.pageNum)}">-->
-<!--    <form th:action="@{/postList?num={num} (num=${cur})}">-->
-<!--        <button th:text="${cur}" style="float:left;" ></button>-->
-<!--        <input type="hidden" name="num" id="num" th:value="${cur}">-->
-<!--    </form>-->
-<!--    </th:block>-->
-<!--</th:block>-->
-
 
 <th:block th:if="${page.prev} == true">
     <form th:action="@{/postList?num={num} (num=(${page.startPageNum}-1)}">
@@ -122,12 +83,6 @@
 
 
 <th:block th:each="cur: ${#numbers.sequence(page.startPageNum,page.endPageNum)}">
-    <!--<th:block th:each th:begin="${page.startPageNum}" th:end="${page.endPageNum}" th:with="p">-->
-    <!--    <form th:action="@{/postList?num={num} (num=${cur})}">-->
-    <!--        <button th:text="${cur}" style="float:left;" ></button>-->
-    <!--        <input type="hidden" name="num" id="num" th:value="${cur}">-->
-    <!--    </form>-->
-
     <div th:if="${select != cur}">
         <form th:action="@{/postList?num={num} }">
             <button  th:text="${cur}"  style="float:left;" ></button>
@@ -146,10 +101,6 @@
             <input type="hidden" name="searchType"  th:value="${page.searchType}">
         </form>
     </div>
-
-    <!--			<div th:if="${select == cur}">-->
-    <!--				<b>${num}</b>-->
-    <!--    </div>-->
 </th:block >
 
 <th:block th:if="${page.next} == true">
@@ -160,7 +111,14 @@
         <input type="hidden" name="searchType"  th:value="${page.searchType}">
     </form>
 </th:block>
-
-
 </body>
 </html>
+<!--되는거-->
+<!--<th:block th:each="page : ${page}">-->
+<!--    <th:block th:each="cur: ${#numbers.sequence(1,page.pageNum)}">-->
+<!--    <form th:action="@{/postList?num={num} (num=${cur})}">-->
+<!--        <button th:text="${cur}" style="float:left;" ></button>-->
+<!--        <input type="hidden" name="num" id="num" th:value="${cur}">-->
+<!--    </form>-->
+<!--    </th:block>-->
+<!--</th:block>-->

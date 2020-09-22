@@ -26,24 +26,34 @@ public class PostController {
     @Autowired
     UserService userService;
 
+    //게시판 리스트 화면 - searchType 옵션과 keyword 통한 검색  +  페이지네이션
+    //required = false, defaultValue로 검색내용 없어도 쿼리 널값 오류 방지
+
     @GetMapping("/postList")
-    public String boardListPage(@RequestParam ("num")int num,@RequestParam(required = false,defaultValue = "title") String searchType,@RequestParam(required = false,defaultValue = "") String keyword,HttpServletRequest req, Model model) throws Exception
+    public String boardListPage(@RequestParam ("num")int num,@RequestParam(required = false,defaultValue = "title") String searchType,@RequestParam(required = false,defaultValue = "") String keyword, Model model) throws Exception
     {
         Pagination page = new Pagination(searchType, keyword);
         page.setNum(num);
-        page.setCount(userService.countSearchByKeyword(page));
 
-        List<PostDTO> SearchByKeywordList = userService.searchByKeyword(page);
-        model.addAttribute("postDTOList", SearchByKeywordList);
-        model.addAttribute("page", page);
+        try {
+            page.setCount(userService.countSearchByKeyword(page));
+            List<PostDTO> SearchByKeywordList = userService.searchByKeyword(page);
+            model.addAttribute("postDTOList", SearchByKeywordList);
+            model.addAttribute("page", page);
 
-        if(keyword.equals("")){
-            model.addAttribute("select", num);
+            if(keyword.equals("")){
+                model.addAttribute("select", num);
+            }
+            else if(!keyword.equals("")&&num>page.getEndPageNum()) {
+                model.addAttribute("select", 1);
+            }
+            else{
+                model.addAttribute("select", num);
+            }
         }
-        else {
-            model.addAttribute("select", 1);
+        catch (Exception e){
+            e.printStackTrace();
         }
-
         return "/post/list";
     }
 
@@ -65,9 +75,10 @@ public class PostController {
 
             Pagination page= new Pagination();
             page.setNum(1);
-            page.setCount(userService.count());
-
-            List <PostDTO> PostDTOList= userService.listPage(page);
+            page.setSearchType("title");
+            page.setKeyword("");
+            page.setCount(userService.countSearchByKeyword(page));
+            List <PostDTO> PostDTOList=userService.searchByKeyword(page);
 
             model.addAttribute("postDTOList", PostDTOList);
             model.addAttribute("page",page);
@@ -103,7 +114,7 @@ public class PostController {
     //게시물 제목 클릭 시 게시물 상세보기 페이지로 이동
     //pathvariable 로
     @GetMapping("/posts/{id}")
-    public String getPostDetail(@PathVariable("id") int postId,@RequestParam ("num") int num,@ModelAttribute Pagination page, @ModelAttribute PostDTO PostDTO,HttpServletRequest req, Model model)throws Exception
+    public String getPostDetail(@PathVariable("id") int postId,@RequestParam ("num") int num,@ModelAttribute Pagination page,@RequestParam String searchType,@RequestParam String keyword, @ModelAttribute PostDTO PostDTO,HttpServletRequest req, Model model)throws Exception
     {
         HttpSession session = req.getSession();
         String writer = (String)session.getAttribute("username");
@@ -111,6 +122,8 @@ public class PostController {
         PostDTO resultCon = new PostDTO();
 
         resultCon =userService.viewPostDetail(con);
+        page.setKeyword(keyword);
+        page.setSearchType(searchType);
 
         model.addAttribute("postDetail",resultCon);
         model.addAttribute("postId",postId);
@@ -148,7 +161,6 @@ public class PostController {
     //게시물 title이나 content 재작성 후 수정버튼 클릭 시 update작업
 
     // put : 전체 교체 patch : 부분교체   /{id} -> @pathvarible로 설정
-    //form action에서 url에 값을 넣는법?
 
     @PatchMapping("/posts/{id}")
     public String updatePost(@PathVariable ("id") int postId,@RequestParam int num, @RequestParam String title, @RequestParam String content, @ModelAttribute PostDTO PostDTO, HttpServletRequest req,HttpServletResponse response, Model model)
@@ -158,35 +170,14 @@ public class PostController {
         userService.updatePost(con);
         Pagination page=new Pagination();
         page.setNum(num);
-        page.setCount(userService.count());
-        List <PostDTO> PostDTOList=userService.listPage(page);
+        page.setSearchType("title");
+        page.setKeyword("");
+        page.setCount(userService.countSearchByKeyword(page));
+        List <PostDTO> PostDTOList=userService.searchByKeyword(page);
         model.addAttribute("postDTOList",PostDTOList);
         model.addAttribute("page",page);
         model.addAttribute("select", num);
         return "/post/list";
-
-
-//        page.setCount(userService.count());
-//        page.setPageNum((page.getCount()/page.getPostNum()));
-////            HashMap<String, Object> map = new HashMap<String, Object>();
-////            map.put("displayPost",page.getDisplayPost());
-////            map.put("postNum",page.getPostNum());
-//
-//
-////            List <PostDTO> PostDTOList= userService.listPage(map);
-//        List <PostDTO> PostDTOList= userService.listPage(page);
-//
-//        model.addAttribute("postDTOList", PostDTOList);
-//        model.addAttribute("page",page);
-////
-////            model.addAttribute("startPageNum", page.getStartPageNum());
-////            model.addAttribute("endPageNum", page.getEndPageNum());
-////
-////            model.addAttribute("prev", page.getPrev());
-////            model.addAttribute("next", page.getNext());
-//    }
-//        model.addAttribute("select", num);
-//        return "/post/list";
 
     }
 
@@ -202,8 +193,10 @@ public class PostController {
             userService.deletePost(postId);
             Pagination page=new Pagination();
             page.setNum(num);
-            page.setCount(userService.count());
-            List <PostDTO> PostDTOList=userService.listPage(page);
+            page.setSearchType("title");
+            page.setKeyword("");
+            page.setCount(userService.countSearchByKeyword(page));
+            List <PostDTO> PostDTOList=userService.searchByKeyword(page);
             model.addAttribute("postDTOList",PostDTOList);
             model.addAttribute("page",page);
             model.addAttribute("select", num);
@@ -224,14 +217,7 @@ public class PostController {
             return "/post/postDetail";
         }
     }
-
-    //option(title,contenet,writer)에 따라 keyword로 검색
-//    @GetMapping("/searchByKeyword")
-//    public String searchByKeyword(@RequestParam String keyword,HttpServletRequest request, Model model) throws Exception{
-//        String searchType =request.getParameter("searchType");
-//        SearchDTO con = new SearchDTO(searchType,keyword);
-//        List<PostDTO> SearchByKeywordList = userService.searchByKeyword(con);
-//        model.addAttribute("postDTOList",SearchByKeywordList);
-//        return "/post/postList";
-//    }
 }
+//게시판리스트+검색+페이징의  api,쿼리 메소드 통합 위해 검색+페이징 객체 통합 => 반복 코드 생김 / 쪼개는것보다 효율적인지
+//          컨트롤러->뷰->컨트롤러 동일객체 전달
+//            타임리프 버튼 눌린 표시

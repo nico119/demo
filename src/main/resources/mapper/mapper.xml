@@ -20,55 +20,53 @@
     <select id="searchByKeyword" parameterType="Pagination" resultType="PostDTO">
         SELECT * FROM post
         WHERE deleteYn ='N'
-        <if test="searchType.equals('title')">
-            and title LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="searchType.equals('content')">
-            and content LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="searchType.equals('writer')">
-            and writer LIKE CONCAT('%',#{keyword},'%')
-        </if>
+        <choose>
+            <when test="searchType.equals('title')">
+                and title LIKE CONCAT('%',#{keyword},'%')
+            </when>
+            <when test="searchType.equals('content')">
+                and content LIKE CONCAT('%',#{keyword},'%')
+            </when>
+            <when test="searchType.equals('writer')">
+                and writer LIKE CONCAT('%',#{keyword},'%')
+            </when>
+        </choose>
+<!--        <if test="searchType.equals('title')">-->
+<!--            and title LIKE CONCAT('%',#{keyword},'%')-->
+<!--        </if>-->
+<!--        <if test="searchType.equals('content')">-->
+<!--            and content LIKE CONCAT('%',#{keyword},'%')-->
+<!--        </if>-->
+<!--        <if test="searchType.equals('writer')">-->
+<!--            and writer LIKE CONCAT('%',#{keyword},'%')-->
+<!--        </if>-->
         ORDER BY id DESC LIMIT #{displayPost}, #{postNum}
     </select>
 
     <select id="countSearchByKeyword" parameterType="Pagination" resultType="int">
         SELECT count(*) FROM post
         WHERE deleteYn ='N'
-        <if test="searchType.equals('title')">
-            and title LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="searchType.equals('content')">
-            and content LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="searchType.equals('writer')">
-            and writer LIKE CONCAT('%',#{keyword},'%')
-        </if>
+        <choose>
+            <when test="searchType.equals('title')">
+                and title LIKE CONCAT('%',#{keyword},'%')
+            </when>
+            <when test="searchType.equals('content')">
+                and content LIKE CONCAT('%',#{keyword},'%')
+            </when>
+            <when test="searchType.equals('writer')">
+                and writer LIKE CONCAT('%',#{keyword},'%')
+            </when>
+        </choose>
+<!--        <if test="searchType.equals('title')">-->
+<!--            and title LIKE CONCAT('%',#{keyword},'%')-->
+<!--        </if>-->
+<!--        <if test="searchType.equals('content')">-->
+<!--            and content LIKE CONCAT('%',#{keyword},'%')-->
+<!--        </if>-->
+<!--        <if test="searchType.equals('writer')">-->
+<!--            and writer LIKE CONCAT('%',#{keyword},'%')-->
+<!--        </if>-->
     </select>
-    <!--    <select id="selectBoardList" resultType="hashmap" parameterType="hashmap">-->
-    <!--    <![CDATA[-->
-    <!--        SELECT-->
-    <!--            *-->
-    <!--        FROM-->
-    <!--            board-->
-    <!--        WHERE-->
-    <!--            DEL_CHK = 'N'-->
-    <!--        ORDER BY IDX DESC-->
-    <!--        LIMIT #{pageStart}, #{perPageNum}-->
-    <!--    ]]>-->
-
-    <!--</select>-->
-    <!--    <select id="countBoardList" resultType="Integer">-->
-    <!--    <![CDATA[-->
-    <!--        SELECT-->
-    <!--            count(*)-->
-    <!--        FROM-->
-    <!--            board-->
-    <!--        WHERE-->
-    <!--            DEL_CHK='N'-->
-    <!--    ]]>-->
-    <!--</select>-->
-
 
     <select id="checkUserInfo" parameterType="UserDTO" resultType="UserDTO">
         SELECT * FROM user

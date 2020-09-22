@@ -41,10 +41,10 @@ public class UserService {
     public List<PostDTO> getPost() throws Exception{
         return testMapper.getPost();
     }
-
-    public List<PostDTO> listPage(Pagination page) throws Exception {
-        return testMapper.listPage(page);
-    }
+//
+//    public List<PostDTO> listPage(Pagination page) throws Exception {
+//        return testMapper.listPage(page);
+//    }
 
     public int getPostCnt() throws Exception{
         return testMapper.getPostCnt();
@@ -79,13 +79,12 @@ public class UserService {
         return  testMapper.countSearchByKeyword(con);
     }
 
-
     public int countBoardListTotal() {
         return testMapper.countBoardList();
     }
 
-    public int count() throws Exception {
-        return testMapper.count();
-    }
+//    public int count() throws Exception {
+//        return testMapper.count();
+//    }
 
 }

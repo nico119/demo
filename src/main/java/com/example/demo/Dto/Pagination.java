@@ -112,6 +112,11 @@ public class Pagination {
         this.postNum=postNum;
     }
 }
+
+
+
+
+
 /*1.주석달기
 
         2.try catch문 사용 (service에서 return타입에 따라 에러구분
