@@ -31,11 +31,6 @@ public class UserController
         return "user/signUp.html";
     }
 
-    /*@RequestMapping(value="/login", method = RequestMethod.POST)
-    public String test(@RequestParam String name, @RequestParam String password, Model model) throws Exception {
-        return "post/postlist.html";
-    }*/
-
     //throw catch를 적용할때 if/else 느낌으로 적용?
     //catch는 조건?  조건을 아는법
     //throw,throws 쓰는 사례

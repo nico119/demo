@@ -31,7 +31,7 @@
     </div>
     <input type="text" name="keyword">
     <input type="submit" value="검색">
-    <input type="hidden" name="num" th:value="${select}">
+    <input type="hidden" name="num" th:value="1">
 </form>
 
 <table>
@@ -52,9 +52,9 @@
             <span th:text="${post.id}"></span>
         </td>
         <form>
-        <td><a th:href="@{/posts/{postId} (postId=${post.id},num=${select}) }">
-            <span th:text="${post.title}"></span></a>
-        </td>
+            <td><a th:href="@{/posts/{postId} (postId=${post.id},num=${select},page=${page}) }">
+                <span th:text="${post.title}"></span></a>
+            </td>
         </form>
         <td>
             <span th:text="${post.writer}"></span>
@@ -122,7 +122,7 @@
 
 
 <th:block th:each="cur: ${#numbers.sequence(page.startPageNum,page.endPageNum)}">
-<!--<th:block th:each th:begin="${page.startPageNum}" th:end="${page.endPageNum}" th:with="p">-->
+    <!--<th:block th:each th:begin="${page.startPageNum}" th:end="${page.endPageNum}" th:with="p">-->
     <!--    <form th:action="@{/postList?num={num} (num=${cur})}">-->
     <!--        <button th:text="${cur}" style="float:left;" ></button>-->
     <!--        <input type="hidden" name="num" id="num" th:value="${cur}">-->
@@ -134,9 +134,9 @@
             <input type="hidden" name="num"  th:value="${cur}">
             <input type="hidden" name="keyword"  th:value="${page.keyword}">
             <input type="hidden" name="searchType"  th:value="${page.searchType}">
-<!--            (keyword=${page.keyword},searchType=${page.searchType},num=${cur})-->
+            <!--            (keyword=${page.keyword},searchType=${page.searchType},num=${cur})-->
         </form>
-        </div>
+    </div>
 
     <div th:if="${select == cur}">
         <form th:action="@{/postList?num={num} (num=${cur})}">
@@ -147,9 +147,9 @@
         </form>
     </div>
 
-<!--			<div th:if="${select == cur}">-->
-<!--				<b>${num}</b>-->
-<!--    </div>-->
+    <!--			<div th:if="${select == cur}">-->
+    <!--				<b>${num}</b>-->
+    <!--    </div>-->
 </th:block >
 
 <th:block th:if="${page.next} == true">

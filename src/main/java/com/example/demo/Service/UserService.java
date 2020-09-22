@@ -54,9 +54,9 @@ public class UserService {
         return testMapper.viewPostDetail(con);
     }
 
-   public PostDTO checkWriter(PostDTO map) throws Exception{
-      return testMapper.checkWriter(map);
-   }
+    public PostDTO checkWriter(PostDTO map) throws Exception{
+        return testMapper.checkWriter(map);
+    }
 
     public void updatePost(PostDTO con) throws Exception{
         testMapper.updatePost(con);

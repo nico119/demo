@@ -30,6 +30,8 @@
 </form>
 <form action="/postList">
     <input type="hidden" name="num" th:value="${select}">
+    <input type="hidden" name="searchType" th:value="${page.searchType}">
+    <input type="hidden" name="keyword" th:value="${page.keyword}">
     <input type="submit" value="돌아가기">
 </form>
 
